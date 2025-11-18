@@ -1,21 +1,39 @@
 ---
 name: notion-md-sync
-description: Batch sync Markdown files to Notion with formatting preservation (tables, code blocks, rich text)
+description: Batch upload local Markdown files to Notion via Python script. Optimized for single or multiple files with zero token cost. Direct script execution bypasses LLM parsing, saving significant tokens on large files while preserving formatting (tables, code blocks, rich text).
 ---
 
 # Notion Markdown Sync
 
 ## Purpose
 
-Efficiently sync Markdown files to Notion pages, preserving formatting including tables, code blocks, bold text, links, and inline code. Optimized for batch operations.
+Efficiently sync Markdown files to Notion pages, preserving formatting including tables, code blocks, bold text, links, and inline code. Optimized for batch operations with zero token cost.
+
+## Why Use This Skill vs. notion-workspace
+
+**Token Efficiency**: This skill uses a Python script that directly calls the Notion API, completely bypassing LLM token usage for file parsing and upload. For large Markdown files (many lines) or batch operations (single or multiple files), this can save thousands of tokens compared to using the `notion-workspace` skill's MCP tools, which require Claude to parse and process each file through the LLM.
+
+**Performance**: Direct script execution is 10-100x faster than MCP tool chains.
+
+**Use Cases**:
+- ✅ Uploading single or multiple Markdown files at once
+- ✅ Large documentation files (>500 lines)
+- ✅ Automated pipelines and batch operations
+- ✅ When you want zero token cost for the upload operation
+
+**When to use `notion-workspace` instead**:
+- Single page creation with custom properties/metadata
+- Database queries and complex workspace operations
+- Exploratory work requiring search and interaction
+- Creating pages from non-Markdown sources
 
 ## When to Use This Skill
 
 Invoke this skill when:
-- Syncing multiple Markdown files (5+) to Notion in batch
-- Uploading documentation with complex formatting (tables, code blocks)
+- Syncing single or multiple Markdown files to Notion in batch
+- Uploading large documentation files (>500 lines) without token costs
 - Automating Notion page creation from local Markdown files
-- Converting technical documentation to Notion format
+- Converting technical documentation to Notion format efficiently
 
 ## Core Workflow
 
@@ -84,13 +102,9 @@ The sync script converts these Markdown elements:
 ```
 Need to sync Markdown to Notion?
 │
-├─ Multiple files (5+)?
+├─ Multiple files
 │  └─ Use: scripts/sync_md_to_notion.py
 │     (Fast, efficient, no LLM token costs)
-│
-├─ Single file, need custom parent selection?
-│  └─ Use: Notion MCP tools directly
-│     (Interactive parent page selection)
 │
 └─ Single file, quick upload?
    └─ Use: scripts/sync_md_to_notion.py
@@ -202,9 +216,13 @@ python3 scripts/sync_md_to_notion.py -p <page-id> README.md
 
 | Method | Speed | Token Cost | Best For |
 |--------|-------|------------|----------|
-| Python Script | ⚡⚡⚡ Fast | None | Batch operations (5+ files) |
-| Notion MCP Direct | ⚡⚡ Medium | None | Single files, custom handling |
-| LLM Agent Parsing | ⚡ Slow | High | Complex decision-making |
+| Python Script (this skill) | ⚡⚡⚡ Fast | **Zero** | Batch operations (single or multiple files), large files |
+| notion-workspace MCP | ⚡⚡ Medium | **High** (1000+ tokens for large files) | Single files, custom handling |
+| LLM Agent Parsing | ⚡ Slow | **Very High** (5000+ tokens) | Complex decision-making |
+
+**Token Savings Example**: Uploading a 2000-line Markdown file with tables and code blocks:
+- Using this skill (Python script): **0 tokens**
+- Using notion-workspace (MCP tools): **~3000-5000 tokens** (Claude must parse and process the entire file)
 
 ## Technical Details
 

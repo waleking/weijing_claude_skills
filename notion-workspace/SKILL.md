@@ -1,6 +1,6 @@
 ---
-name: notion
-description: General-purpose Notion workspace operations including search, discovery, content creation, database queries, and workspace organization. Use this skill when the user needs to interact with their Notion workspace beyond simple Markdown sync.
+name: notion-workspace
+description: Interactive Notion workspace management using MCP tools. Use for searching pages/databases, querying database entries, creating pages with custom properties, managing workspace structure, and exploratory operations requiring user interaction.
 allowed-tools: mcp__notion__API-post-search, mcp__notion__API-retrieve-a-page, mcp__notion__API-retrieve-a-database, mcp__notion__API-get-block-children, mcp__notion__API-post-page, mcp__notion__API-patch-page, mcp__notion__API-patch-block-children, mcp__notion__API-update-a-block, mcp__notion__API-delete-a-block, mcp__notion__API-post-database-query, mcp__notion__API-create-a-database, mcp__notion__API-update-a-database, mcp__notion__API-retrieve-a-comment, mcp__notion__API-create-a-comment, mcp__notion__API-get-users, mcp__notion__API-get-user, mcp__notion__API-get-self
 ---
 
